@@ -24,14 +24,14 @@ In practice, scattered data owners also demand personalized models rather than a
 
 Following the first federated learning paper McMahan *et al.* [2016], we define the objective function for the federated setting as
 
-$$
-\begin{align}
+```latex
+\begin{aligned}
 F(\textbf{w}) &= \sum_{k=1}^{K} \frac{n_k}{N} F_{k}(\textbf{w}) \\
 &= \sum_{k=1}^{K} \frac{n_k}{N} \frac{1}{n_k} \sum_{i \in \mathcal{P}_{k}} l(\textbf{x}_{i}, \textbf{y}_{i}; \textbf{w})
-\end{align}
-$$
+\end{aligned}
+```
 
-where $l(\textbf{x}_{i}, \textbf{y}_{i}; \textbf{w})$ is the loss function of the prediction on example
+where $ l(\textbf{x}_{i}, \textbf{y}_{i}; \textbf{w}) $ is the loss function of the prediction on example
 $(\textbf{x}_{i}, \textbf{y}_{i})$ made with model parameters $\textbf{w}$, K is the total learning nodes number, $\mathcal{P}_{k}$ is the set of indexes of data points on node k, $n_k = |P_k|$, and $\sum_{k=1}^{K} n_{k} = N$. This objective function can capture the different quantity of samples and statistical distribution of K nodes. Here, different nodes learn the global model jointly, which showing as the same loss function $l$ and parameters $\textbf{w}$.
 
 ### General Framework of Federated Multi-Task Learning
@@ -42,7 +42,7 @@ $(\textbf{x}_{i}, \textbf{y}_{i})$ made with model parameters $\textbf{w}$, K is
 
 DNNs are able to extract deep features from raw data. However, to the best of our knowledge, DNNs has not been applied to federated multi-task problems. We thus consider DNNs as our feature transformation function and make prediction based on the hidden features. Formally speaking, the formulation can be defined as:
 
-$$
+```latex
 \begin{aligned}
 & \begin{aligned}[t] \min_{\bm{\theta}, \vec{U},\vec{W},\bm{\Omega}}
 &\sum_{k=1}^{K}\frac{1}{n_k}\bigg[\bigg.\sum_{i=1}^{n_k}l(f(\vec{x}_i^{k},\bm{\theta}_k,\vec{U}_k,\vec{w}_k),\vec{y}_i^k) \\
@@ -50,9 +50,9 @@ $$
 &+\frac{1}{2}\lambda_3||\bm{\theta}||_F^2 + \frac{1}{2}\lambda_4||\vec{U}||_F^2, \end{aligned} \\
 & \quad \text{s.t.} \quad  \bm{\Omega}_k \ge 0 \quad \text{and} \quad tr(\bm{\Omega}_k) = 1, \quad k = 1, 2, ... ,K.
 \end{aligned}
-$$
+```
 
-where $f(\cdot)$  represents DNNs feature mapping as shown in Figure 2(b). $\bm{\theta}_k$ is the feature transformation network. $\bm{U}_k$ and $\vec{w}_k$ are output layer (e.g. softmax). The first constraint in (6) holds due to the fact that $\bm\Omega$ is defined as a task covariance matrix. The second constraint is used to restrict its complexity.
+where ~f(\cdot)~  represents DNNs feature mapping as shown in Figure 2(b). $\bm{\theta}_k$ is the feature transformation network. $\bm{U}_k$ and $\vec{w}_k$ are output layer (e.g. softmax). The first constraint in (6) holds due to the fact that $\bm\Omega$ is defined as a task covariance matrix. The second constraint is used to restrict its complexity.
 
 ## Approach
 ```latex
