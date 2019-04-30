@@ -45,12 +45,21 @@
             regex: new RegExp(`<${key}(.*)>`, 'g'),
             replace: `<${key} class="${classMap[key]}" $1>`
         }));
+		
+		const katexConfig = {
+		  displayMode: true,
+		  throwOnError: false, // allows katex to fail silently
+		  errorColor: '#ff0000',
+		  delimiters: [
+		    { left: "$", right: "$", display: false }
+		  ]
+		}
 
         const converter = new showdown.Converter({
             extensions: [
 				bindings, 
 				'figure',
-				showdownKatex()
+				showdownKatex(katexConfig)
 			]
         });
         converter.setOption('parseImgDimensions', true);

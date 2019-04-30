@@ -2,6 +2,8 @@ Federated Learning enables training models collaboratively over a large number o
 However, they both pose particular statistical and systems challenges. To simultaneously address these two challenges, and focusing on training deep neural networks models collaboratively, we propose a decentralized approach with the framework and optimization co-design.
 
 ## Problem formulation
+asdasd $\bm\Omega$ asa
+
 ### Statistical Challenges
 1. **Non-IID**: Each worker generates data in a non-i.i.d. (independent and identically distributed) manner with a distinct statistical distribution.
 1. **Unbalanced Local Data**: Workers have different quantity of data sample due to their different behaviors.
