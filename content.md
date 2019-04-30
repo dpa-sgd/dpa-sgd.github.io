@@ -55,6 +55,10 @@ $$
 where $f(\cdot)$  represents DNNs feature mapping as shown in Figure 2(b). $\bm{\theta}_k$ is the feature transformation network. $\bm{U}_k$ and $\vec{w}_k$ are output layer (e.g. softmax). The first constraint in (6) holds due to the fact that $\bm\Omega$ is defined as a task covariance matrix. The second constraint is used to restrict its complexity.
 
 ## Approach
+```latex
+\sum_{i=1}^n i^3 = \left( \frac{n(g(n)+1)} 2 \right) ^2 \bm\Omega
+```
+
 
 ###  Algorithm
 
