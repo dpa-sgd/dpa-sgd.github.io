@@ -22,6 +22,10 @@ In practice, scattered data owners also demand personalized models rather than a
 simultaneously address statistical and system challenges is the primary research direction of federated learning.
 
 ## Approach
+```latex
+\sum_{i=1}^n i^3 = \left( \frac{n(g(n)+1)} 2 \right) ^2 \bm\Omega
+```
+
 
 ## Comparison to the past works
 

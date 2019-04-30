@@ -17,9 +17,13 @@
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
     
     <!-- Showdown -->
-    <script src=" https://cdnjs.cloudflare.com/ajax/libs/showdown/1.9.0/showdown.min.js"></script>
-    <script src="js/figure-extension.js"></script>
-    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/showdown/1.9.0/showdown.min.js"></script>
+	<!-- Showdown Katex Extension -->
+	<script src="js/showdown-katex.min.js"></script>
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.10.1/dist/katex.min.css" integrity="sha384-dbVIfZGuN1Yq7/1Ocstc1lUEm+AT+/rCkibIcC/OmWo5f0EA48Vf8CytHzGrSwbQ" crossorigin="anonymous">
+	<!-- Showdown Figure Self Defined Extension -->
+	<script src="js/figure-extension.js"></script>
+    	
     <!-- jQuery -->
     <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
 
@@ -29,24 +33,25 @@
 
     <!-- highlight -->
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/styles/default.min.css">
-    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/highlight.min.js"></script>
-
-
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/highlight.min.js"></script>
 
     <script>
+		// Ignore the Materialized Unorder List Defined In WAVE by cusomizing a classMap in showdownJS
         const classMap = {
             ul: 'browser-default'
-        }
-
-        const bindings = Object.keys(classMap)
-        .map(key => ({
+        };
+        const bindings = Object.keys(classMap).map(key => ({
             type: 'output',
             regex: new RegExp(`<${key}(.*)>`, 'g'),
             replace: `<${key} class="${classMap[key]}" $1>`
         }));
 
         const converter = new showdown.Converter({
-            extensions: [bindings, 'figure']
+            extensions: [
+				bindings, 
+				'figure',
+				showdownKatex()
+			]
         });
         converter.setOption('parseImgDimensions', true);
         converter.setOption('tables', true);
