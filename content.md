@@ -20,7 +20,23 @@ These three characteristics make communication cost and low-speed training becom
 
 In practice, scattered data owners also demand personalized models rather than a global model for all owners. They hope to not only get help from other owners’ data to train a high accuracy model but also to gain their personalized models which can represent their unique data properties. Thus, to simultaneously address statistical and system challenges is the primary research direction of federated learning.
 
-## Approach
+### General Definition of Federated Learning
+
+Following the first federated learning paper McMahan *et al.* [2016], we define the objective function for the federated setting as
+
+$$
+\begin{align}
+F(\textbf{w}) &= \sum_{k=1}^{K} \frac{n_k}{N} F_{k}(\textbf{w}) \\
+&= \sum_{k=1}^{K} \frac{n_k}{N} \frac{1}{n_k} \sum_{i \in \mathcal{P}_{k}} l(\textbf{x}_{i}, \textbf{y}_{i}; \textbf{w})
+\end{align}
+$$
+
+where $l(\textbf{x}_{i}, \textbf{y}_{i}; \textbf{w})$ is the loss function of the prediction on example
+$(\textbf{x}_{i}, \textbf{y}_{i})$ made with model parameters $\textbf{w}$, K is the total learning nodes number, $\mathcal{P}_{k}$ is the set of indexes of data points on node k, $n_k = |P_k|$, and $\sum_{k=1}^{K} n_{k} = N$. This objective function can capture the different quantity of samples and statistical distribution of K nodes. Here, different nodes learn the global model jointly, which showing as the same loss function $l$ and parameters $\textbf{w}$.
+
+### General Framework of Federated Multi-Task Learning
+
+
 
 ### Federated Multi-Task Deep Learning Framework
 
@@ -37,6 +53,8 @@ $$
 $$
 
 where $f(\cdot)$  represents DNNs feature mapping as shown in Figure 2(b). $\bm{\theta}_k$ is the feature transformation network. $\bm{U}_k$ and $\vec{w}_k$ are output layer (e.g. softmax). The first constraint in (6) holds due to the fact that $\bm\Omega$ is defined as a task covariance matrix. The second constraint is used to restrict its complexity.
+
+## Approach
 
 ###  Algorithm
 
