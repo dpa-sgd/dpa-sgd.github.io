@@ -18,10 +18,28 @@ capacities of each worker may differ due to variability in hardware(CPU, memory)
 These three characteristics make communication cost and low-speed training become a major bottleneck towards real-world deployment.
 
 
-In practice, scattered data owners also demand personalized models rather than a global model for all owners. They hope to not only get help from other owners’ data to train a high accuracy model but also to gain their personalized models which can represent their unique data properties. Thus, to
-simultaneously address statistical and system challenges is the primary research direction of federated learning.
+In practice, scattered data owners also demand personalized models rather than a global model for all owners. They hope to not only get help from other owners’ data to train a high accuracy model but also to gain their personalized models which can represent their unique data properties. Thus, to simultaneously address statistical and system challenges is the primary research direction of federated learning.
 
 ## Approach
+
+### Federated Multi-Task Deep Learning Framework
+
+DNNs are able to extract deep features from raw data. However, to the best of our knowledge, DNNs has not been applied to federated multi-task problems. We thus consider DNNs as our feature transformation function and make prediction based on the hidden features. Formally speaking, the formulation can be defined as:
+
+$$
+\begin{aligned}
+& \begin{aligned}[t] \min_{\bm{\theta}, \vec{U},\vec{W},\bm{\Omega}}
+&\sum_{k=1}^{K}\frac{1}{n_k}\bigg[\bigg.\sum_{i=1}^{n_k}l(f(\vec{x}_i^{k},\bm{\theta}_k,\vec{U}_k,\vec{w}_k),\vec{y}_i^k) \\
+&+ \frac{1}{2}\lambda_ 1tr(\vec{W}_k\bm{\Omega}_k^{-1}\vec{W}_k^{T})\bigg]\bigg. + \frac{1}{2}\lambda_2||\vec{W}||_F^2\\
+&+\frac{1}{2}\lambda_3||\bm{\theta}||_F^2 + \frac{1}{2}\lambda_4||\vec{U}||_F^2, \end{aligned} \\
+& \quad \text{s.t.} \quad  \bm{\Omega}_k \ge 0 \quad \text{and} \quad tr(\bm{\Omega}_k) = 1, \quad k = 1, 2, ... ,K.
+\end{aligned}
+$$
+
+where $f(\cdot)$  represents DNNs feature mapping as shown in Figure 2(b). $\bm{\theta}_k$ is the feature transformation network. $\bm{U}_k$ and $\vec{w}_k$ are output layer (e.g. softmax). The first constraint in (6) holds due to the fact that $\bm\Omega$ is defined as a task covariance matrix. The second constraint is used to restrict its complexity.
+
+###  Algorithm
+
 
 ## Comparison to the past works
 
@@ -35,6 +53,17 @@ simultaneously address statistical and system challenges is the primary research
 
 - Especially if you approach and final results aren’t
   impressive, please show us your progressive steps
+
+$$
+\begin{align*}
+y = y(x,t) &= A e^{i\theta} \\
+&= A (\cos \theta + i \sin \theta) \\
+&= A (\cos(kx - \omega t) + i \sin(kx - \omega t)) \\
+&= A\cos(kx - \omega t) + i A\sin(kx - \omega t)  \\
+&= A\cos \Big(\frac{2\pi}{\lambda}x - \frac{2\pi v}{\lambda} t \Big) + i A\sin \Big(\frac{2\pi}{\lambda}x - \frac{2\pi v}{\lambda} t \Big)  \\
+&= A\cos \frac{2\pi}{\lambda} (x - v t) + i A\sin \frac{2\pi}{\lambda} (x - v t)
+\end{align*}
+$$
 
 
 |||||
