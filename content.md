@@ -1,29 +1,40 @@
-Furniture assembly is a difficult challenge even for humans, requiring excellent planning and manipulation skills. Recently, reinforcement learning has acheived notable advances with the advent of deep learning, and its application to executing realistic tasks for robotics is promising. However, current robotic simulations and benchmarks focus on low-level control tasks with a short time horizon like grasping and picking. To accelerate the application of reinforcement learning to real world tasks, we propose the **IKEA Furniture Assembly Environment**,  a realistic environment that models the task of furniture assembly to learn and benchmark complex manipulation skills with hierarchical structures and a long time horizon.
+Federated Learning enables training models collaboratively over a large number of distributed edge devices without integrating their local data, while Federated Multi-Task Learning can further help to learn a personalized model for each device.
+However, they both pose particular statistical and systems challenges. To simultaneously address these two challenges, and focusing on training deep neural networks models collaboratively, we propose a decentralized approach with the framework and optimization co-design.
 
-Our environment features over 80 furniture models including chairs, tables, cabinets, bookcases, desks, shelfs, and tv units. To help transfer learning from simulated to real-world environments, all the furniture models are created following the IKEA’s official user’s manuals with a minor simplification in small details such as carving and screws. Simple furniture only have 2 parts while complex furniture have up to 13. The furniture models are composed of parts and joints that connect them. We allow the user to relax or constrain conditions to control the difficulty, such as distance and angle between joints or requiring a screw. We offer a tool in Unity to automatically create and edit joint positions and constraints for ease of use.
-![Example Furniture models](/img/furniture_models.png "Furnitures")
+## Problem formulation
+### Statistical Challenges
+1. **Non-IID**: Each worker generates data in a non-i.i.d. (independent and identically distributed) manner with a distinct statistical distribution.
+1. **Unbalanced Local Data**: Workers have different quantity of data sample due to their different behaviors.
 
-Our environment supports a diverse set configurations for realistic simulation. We provide variability in furniture compositions, visual appearance of parts, part shapes and textures, physics, lighting condition, background scenes and more.
-||||
-|:---:|:---:|:---:|
-|![Indoor Enviroment 1](/img/env_var/indoor_wood_floor.png "indoor_wood_floor")|![Indoor Enviroment 2](/img/env_var/indoor_wood_floor2.gif "indoor_wood_floor2")|![Lab Enviroment](/img/env_var/indoor_lab.gif "indoor_lab")|
+These two characteristics bring challenges to learning a high-performance personalized model for each worker.
 
-### Diverse Robots, Actions, and Observations
-To assemble furniture, the agent must select a part, align the part with the corresponding part, and attach the two parts together. We offer various types of robots, observations and actions to vary the difficulty of the problem. For example, the agent can be a fully functional Baxter robot.  By default, the Baxter is controlled through joint position control where the policy outputs a target angle and force for each joint. The Baxter can also be controlled with inverse kinematics to abstract the movement. Currently, the environment supports the Baxter and Sawyer robots.
-| ||
-|:---:|:--:\
-|![Baxter](/img/Baxter_Move_Rotation.gif =50%x* "baxter")|![Sawyer](/img/Baxter_Move_Rotation.gif =50%x* "baxter")|
+### System Challenges
+1. **Larger Worker Number**: The worker number is typically larger than cloudbased learning. The larger number will pose a higher communication cost and difficult communication
+synchronization.
+1. **Heterogeneous Networks**: Each worker may differ in communication capacity due to heterogeneous networks(4G, WiFi, and other IoT protocol).
+1. **Heterogeneous Computation**: Computational
+capacities of each worker may differ due to variability in hardware(CPU, memory).
 
-Because learning continuous control in robotics can be challenging, the cursor agent abstracts away the robot control to one or two 3D cubes that serve as cursors. In the continuous control case, the agent generates 6 floating point values for each cursor to move and rotate the cursor by the value amount in the X, Y, Z axes. The agent also needs to output a value above 0 to select anything within the cursor, and otherwise it will drop whatever is in the cube. Finally, to attach 2 parts together, the agent should output a value above 0 in the match dimension to signal a match.
+These three characteristics make communication cost and low-speed training become a major bottleneck towards real-world deployment.
 
-|||
-|:---:|:---:|
-|![One cursor](/img/chair15_2p_2x.gif "Table TID=28 With 1 Pointer")|![Two cursors](/img/chair15_2p_2x.gif =50%x* "Chair TID=15 With 2 Pointers")|
 
-<!-- ![Cursor's action space](/img/cursor_action_space.png =50%x50% "Cursor's action space") -->
+In practice, scattered data owners also demand personalized models rather than a global model for all owners. They hope to not only get help from other owners’ data to train a high accuracy model but also to gain their personalized models which can represent their unique data properties. Thus, to
+simultaneously address statistical and system challenges is the primary research direction of federated learning.
 
-In the discrete case, the movement and rotation are discretized into 6 cardinal directions, e.g move up / down / left / right / forward / backward. The policy just needs to output one command at each time step. An example trajectory could be move up, select, rotate left, match.
+## Approach
 
+## Comparison to the past works
+
+- What has been done before
+
+- What is new about your problem or approach
+
+  - In other words, why is your work cool?
+
+## Results
+
+- Especially if you approach and final results aren’t
+  impressive, please show us your progressive steps
 
 
 |||||
