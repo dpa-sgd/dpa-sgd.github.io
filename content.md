@@ -183,7 +183,6 @@ To put it simply, another contribution of this paper is that we publish a practi
 
 
 ## Comparison to Previous Works
-=======
 
 ### Federated Multi-Task Learning
 
@@ -206,12 +205,20 @@ Decentralized SGD, another approach to reducing communication, was successfully 
 
 ## Results
 
-Both the baseline model and the our model were tested on three Sort-of-CLEVR datasets which have 2, 4, or 6 shapes in each image, respectively.
+|||
+|:---:|:---:|
+|![Accurady for FedAvg-MTL and Decentralized vs time](./img/accuracy/acc1-time.png)|![Accurady for FedAvg-MTL and Decentralized vs Round number](./img/accuracy/acc1-round_number.png)|
 
-![Accurady for FedAvg and Decentrailized (Round number)](./img/accuracy/acc1-time.png)
+We compare the performance between FedAvg, the current state-of-the-art Federated Learning algorithm, and our DPA-SGD on Multi-Task Learning Framework (DPA-SGD-MTL) with a ring topology network. From the Figure, we clearly see that the training speed is around 20% faster than the FedAvg. The Ring DPA-SGD-MTL’s accuracy is also comparable to the FedAvg.
+
+![Accurady for FedAvg Single-task and Ring DPA-SGD Multi-task vs Round number](./img/accuracy/acc2-round_number.png)
+
+We also compared the performance between FedAvg on Multi-Task Learning Framework (FedAvg-MTL) and our DPA-SGD on Multi-Task Learning Framework (Ring DPA-SGD-MTL) with a ring topology network. From the Figure, we clearly see that the training speed is around 20% faster than the FedAvg-MTL. The Ring DPA-SGD-MTL’s accuracy is slightly lower but comparable than the FedAvg-MTL . This proves that our convergence analysis that when decentralized the topology of the gradient exchanging, due to the sparsity of the topology has a negative impact on the convergence of the model. We have to balance the performance of the model and the training speed in the federated learning setting.
+
+We will conduct more experiment on model performance and training speed on communication and computation heterogeneous setting (delay = 0ms, 300ms, 1s, 3s), different number of works (4, 8, 16, 32, 64, 128, 256, 512), and different topologies (0.3, 0.6, 0.9). Hopefully, we can finish these experiments before the NeurIPS deadline.
 
 ## Appendix
-### Convergence Analysis
+### Appendix I: Convergence Analysis
 
 **Convergence of DPA-SGD**: If the communication period $\tau$ satisfies:
 
@@ -233,7 +240,12 @@ better convergence.
 1. Streaming training
 1. upload on-device data to the edge data center.
 
+### Appendix II: Dataset
+
 <table id="leafdata-table"><tr><th><span style="font-weight:bold">Dataset</span></th><th><span style="font-weight:bold">Number of devices</span></th><th><span style="font-weight:bold">Total samples</span></th><th colspan="2"><span style="font-weight:bold">Sample per device</span></th></tr><tr><td></td><td></td><td></td><td>mean</td><td>stdev</td></tr><tr><td>FEMNIST</td><td>3,550</td><td>805,263</td><td>226.83</td><td>88.94</td></tr><tr><td>Sent140</td><td>660,120</td><td>1, 600, 498</td><td>2.42</td><td>4.71</td></tr><tr><td>Shakespeare</td><td>2,288</td><td>106, 126</td><td>46.38</td><td>91.71</td></tr></table>
+
+### Appendix III: Code Snippet
+![Code snippet of our Federated Learning System](./img/code1.png)
 
 ----
 
