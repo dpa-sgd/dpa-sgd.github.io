@@ -205,13 +205,13 @@ Decentralized SGD, another approach to reducing communication, was successfully 
 
 ## Results
 
-|||
-|:---:|:---:|
-|![Accurady for FedAvg-MTL and Decentralized vs time](./img/accuracy/acc1-time.png)|![Accurady for FedAvg-MTL and Decentralized vs Round number](./img/accuracy/acc1-round_number.png)|
+![Accurady for FedAvg Single-task and Ring DPA-SGD Multi-task vs Round number](./img/accuracy/acc2-round_number.png)
 
 We compare the performance between FedAvg, the current state-of-the-art Federated Learning algorithm, and our DPA-SGD on Multi-Task Learning Framework (DPA-SGD-MTL) with a ring topology network. From the Figure, we clearly see that the training speed is around 20% faster than the FedAvg. The Ring DPA-SGD-MTL’s accuracy is also comparable to the FedAvg.
 
-![Accurady for FedAvg Single-task and Ring DPA-SGD Multi-task vs Round number](./img/accuracy/acc2-round_number.png)
+|||
+|:---:|:---:|
+|![Accurady for FedAvg-MTL and Decentralized vs time](./img/accuracy/acc1-time.png)|![Accurady for FedAvg-MTL and Decentralized vs Round number](./img/accuracy/acc1-round_number.png)|
 
 We also compared the performance between FedAvg on Multi-Task Learning Framework (FedAvg-MTL) and our DPA-SGD on Multi-Task Learning Framework (Ring DPA-SGD-MTL) with a ring topology network. From the Figure, we clearly see that the training speed is around 20% faster than the FedAvg-MTL. The Ring DPA-SGD-MTL’s accuracy is slightly lower but comparable than the FedAvg-MTL . This proves that our convergence analysis that when decentralized the topology of the gradient exchanging, due to the sparsity of the topology has a negative impact on the convergence of the model. We have to balance the performance of the model and the training speed in the federated learning setting.
 
@@ -248,7 +248,7 @@ better convergence.
 ![Code snippet of our Federated Learning System](./img/code1.png)
 
 ### Appendix IV: Poster
-<figure><a href="/attachment/fl-dpa-sgd-poster.pdf"><img src="./img/fl-dpa-sgd-poster.png"></a><figcaption>Poster (click to see the pdf)</figcaption></figure>
+<figure><a href="./attachment/fl-dpa-sgd-poster.pdf"><img src="./img/fl-dpa-sgd-poster.png"></a><figcaption>Poster (click to see the pdf)</figcaption></figure>
 
 ----
 
