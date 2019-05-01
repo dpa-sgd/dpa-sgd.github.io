@@ -1,8 +1,9 @@
+To clarify the differences between various traditional systems and our system , we illustrates the key design in Figure 1; Figure 1(a) is Cloud-Based Distributed Learning while Figure (b) is Centralized Federated Learning; Figure (c) and Figure (d) are Decentralized Federated Learning and Centralized Communication Topology with Decentralized Parameter Exchanging Topology respectively.
+
+![Figure 1: Federated Multi-Task Learning Topology](./img/intro-fig.png)
 
 ## Problem formulation
 
-
-![Figure 1: Federated Multi-Task Learning Topology. (a) Cloud-Based Distributed Learning; (b) Centralized Federated Learning; (c) Decentralized Federated Learning; (d) Centralized Communication Topology with Decentralized Parameter Exchanging Topology.](./img/intro-fig.png)
 
 ### Statistical Challenges
 1. **Non-IID**: Each worker generates data in a non-i.i.d. (independent and identically distributed) manner with a distinct statistical distribution.
