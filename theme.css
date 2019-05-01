@@ -202,8 +202,17 @@ div#markdown-body h3 {
     text-align: center;
     padding-top: 0px;
     padding-bottom: 10px;
-    font-size: 1em;
+    font-size: 1.5em;
 }
+
+div#markdown-body h4 {
+    font-weight:300;
+    text-align: center;
+    padding-top: 0px;
+    padding-bottom: 10px;
+    font-size: 1.2em;
+}
+
 
 div#markdown-body hr{
     border: 0;
