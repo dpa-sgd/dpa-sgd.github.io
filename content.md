@@ -205,8 +205,7 @@ Decentralized SGD, another approach to reducing communication, was successfully 
 
 ## Results
 
-
-<table id="leafdata-table"><tr><th><span style="font-weight:bold">Dataset</span></th><th><span style="font-weight:bold">Number of devices</span></th><th><span style="font-weight:bold">Total samples</span></th><th colspan="2"><span style="font-weight:bold">Sample per device</span></th></tr><tr><td></td><td></td><td></td><td>mean</td><td>stdev</td></tr><tr><td>FEMNIST</td><td>3,550</td><td>805,263</td><td>226.83</td><td>88.94</td></tr><tr><td>Sent140</td><td>660,120</td><td>1, 600, 498</td><td>2.42</td><td>4.71</td></tr><tr><td>Shakespeare</td><td>2,288</td><td>106, 126</td><td>46.38</td><td>91.71</td></tr></table>
+<div style="overflow: auto;"><table id="leafdata-table"><tr><th><span style="font-weight:bold">Dataset</span></th><th><span style="font-weight:bold">Number of devices</span></th><th><span style="font-weight:bold">Total samples</span></th><th colspan="2"><span style="font-weight:bold">Sample per device</span></th></tr><tr><td></td><td></td><td></td><td>mean</td><td>stdev</td></tr><tr><td>FEMNIST</td><td>3,550</td><td>805,263</td><td>226.83</td><td>88.94</td></tr><tr><td>Sent140</td><td>660,120</td><td>1, 600, 498</td><td>2.42</td><td>4.71</td></tr><tr><td>Shakespeare</td><td>2,288</td><td>106, 126</td><td>46.38</td><td>91.71</td></tr></table></div>
 
 This table is a brief statistic of the dataset (LEAF) that we are using in the experiments. To be specific, FEMNIST is a handwritten digit database, where image classification problem can be conducted based on this dataset. Sent140 is a text dataset, which allows you to discover the sentiment of a brand or product. Shakespeare is also a text dataset, however the objective here is try to learn the pattern of the sentences and generate similar text style.
 
