@@ -85,6 +85,8 @@ where $f(\cdot)$ represents DNNs feature mapping as shown in Figure 2(b). $\bm{\
 
 In federated learning situation, training should be conducted on each node respectively. One intuitive thought is the centralized network topology in McMahan *et al.* \[2016\], where one center node synchronously takes a weighted average parameters of every clients at each time step (Figure 2(a)). However,  this model faces the problems that in DNNs situation, far more parameters need to be calculated and transferred. Each node has heterogeneous computing performance and network bandwidth (Figure (b))). Setting one center node to synchronously collect all the parameters will induce high communication cost and low convergence speed. In order to overcome these problems, we design a decentralized topology, where each node only needs to share their parameters with neighbored nodes as shown in Figure 2(c)), where there is no communication between worker one and worker 4. Abandoning the central node induces the problem that parameters cannot be exchanged and synchronized amongst every nodes, which means that the centralized optimization method can not be achieved on this topology. To this end, we propose a Decentralized Periodic Averaging SGD (DPA-SGD) to tackle the optimization problem in decentralized topology.
 
+---
+
 ## Approach
 
 ### Decentralized Periodic Averaging SGD
@@ -179,7 +181,9 @@ The software architecture of each worker is shown in Figure 5 (Lower). Each work
 
 To put it simply, another contribution of this paper is that we publish a practical federated learning system that can promote further research on distributed learning and especially federated learning. Our code is published at [https://github.com/chaoyanghe/FederatedLearning](https://github.com/chaoyanghe/FederatedLearning).
 
+
 ## Comparison to Previous Works
+=======
 
 ### Federated Multi-Task Learning
 
@@ -229,6 +233,7 @@ better convergence.
 1. Streaming training
 1. upload on-device data to the edge data center.
 
+<table id="leafdata-table"><tr><th><span style="font-weight:bold">Dataset</span></th><th><span style="font-weight:bold">Number of devices</span></th><th><span style="font-weight:bold">Total samples</span></th><th colspan="2"><span style="font-weight:bold">Sample per device</span></th></tr><tr><td></td><td></td><td></td><td>mean</td><td>stdev</td></tr><tr><td>FEMNIST</td><td>3,550</td><td>805,263</td><td>226.83</td><td>88.94</td></tr><tr><td>Sent140</td><td>660,120</td><td>1, 600, 498</td><td>2.42</td><td>4.71</td></tr><tr><td>Shakespeare</td><td>2,288</td><td>106, 126</td><td>46.38</td><td>91.71</td></tr></table>
 
 |||||
 |:---:|:---:|:---:|:---:|
