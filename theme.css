@@ -87,7 +87,7 @@ body, html {
 .link-container {
     position: relative;
     top: -20px;
-    font-size: 1em;
+    font-size: 0.85em;
 }
 
 .link-container .horizontal-list {
@@ -95,7 +95,7 @@ body, html {
 }
 
 /* Avoid overflow horizontally */
-.katex-display,table {
+.katex-display {
 	overflow:auto;
 }
 a {
