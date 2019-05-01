@@ -235,31 +235,6 @@ better convergence.
 
 <table id="leafdata-table"><tr><th><span style="font-weight:bold">Dataset</span></th><th><span style="font-weight:bold">Number of devices</span></th><th><span style="font-weight:bold">Total samples</span></th><th colspan="2"><span style="font-weight:bold">Sample per device</span></th></tr><tr><td></td><td></td><td></td><td>mean</td><td>stdev</td></tr><tr><td>FEMNIST</td><td>3,550</td><td>805,263</td><td>226.83</td><td>88.94</td></tr><tr><td>Sent140</td><td>660,120</td><td>1, 600, 498</td><td>2.42</td><td>4.71</td></tr><tr><td>Shakespeare</td><td>2,288</td><td>106, 126</td><td>46.38</td><td>91.71</td></tr></table>
 
-|||||
-|:---:|:---:|:---:|:---:|
-|![Current](/img/current.png)|![Parts](/img/parts.png)|![Goal](/img/goal.png)|![Segmentation](/img/segmentation.png)|
-
-The observation space can be composed of the following:
-- __True state__:  coordinate positions and rotations of all objects relative to the agent
-- __Current observation__: RGB image of the environment 
-- __Parts observations__: RGB image of each furniture part
-- __Goal observation__: RGB image of the goal configuration
-- __Segmentation mask__: mask over the current observation to show where objects are 
-- __Agent state__: agent's internal state
-    - Baxter agent's internal state contains the positions of all joints and rotations relative to the base of the robot.
-    - Cursor agent's internal state contains the XYZ coordinates of each cursor.
-
-
-----
-
-# Feature list
-text
-
-----
-
-# Baselines
-text
-
 ----
 
 # Citations
