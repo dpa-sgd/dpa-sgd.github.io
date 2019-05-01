@@ -63,6 +63,10 @@ body, html {
     padding: 0px;
 }
 
+#leafdata-table td,th {
+	text-align: center !important;
+} 
+
 .excerpt{
     color: #fff;
     font-weight: 100;
