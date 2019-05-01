@@ -259,10 +259,10 @@ text
 # Citations
 ```
 @inproceedings{
-  lee2019ikea,
-  title = {IKEA Furniture Assembly Environment},
-  author = {Lee, Youngwoon and Hu, Edward S and Zhengyu, Yang and Lim, Joseph J},
+  he2019dpasgd,
+  title = {Federated Multi-Task Learning with Decentralized Periodic Averaging SGD},
+  author = {He, Chaoyang and Xie, Tian and Zhengyu, Yang and Hu, Zijian and Xia, Shuai},
   year = {2019},
-  url={https://youngwoon.github.com/assembly},
+  url={https://dpa-sgd.github.io/},
 }
 ```
