@@ -2,7 +2,6 @@ Federated Learning enables training models collaboratively over a large number o
 However, they both pose particular statistical and systems challenges. To simultaneously address these two challenges, and focusing on training deep neural networks models collaboratively, we propose a decentralized approach with the framework and optimization co-design.
 
 ## Problem formulation
-asdasd $\bm\Omega$ asa
 
 ### Statistical Challenges
 1. **Non-IID**: Each worker generates data in a non-i.i.d. (independent and identically distributed) manner with a distinct statistical distribution.
@@ -28,30 +27,39 @@ Following the first federated learning paper McMahan *et al.* [2016], we define 
 
 ```latex
 \begin{aligned}
-F(\textbf{w}) & = \sum_{k=1}^{K} \frac{n_k}{N} F_{k}(\textbf{w}) \\
-& = \sum_{k=1}^{K} \frac{n_k}{N} \frac{1}{n_k} \sum_{i \in \mathcal{P}_{k}} l(\textbf{x}_{i}, \textbf{y}_{i}; \textbf{w})
+F(\textbf{w}) &= \sum_{k=1}^{K} \frac{n_k}{N} F_{k}(\textbf{w}) \\
+&= \sum_{k=1}^{K} \frac{n_k}{N} \frac{1}{n_k} \sum_{i \in \mathcal{P}_{k}} l(\textbf{x}_{i}, \textbf{y}_{i}; \textbf{w})
 \end{aligned}
 ```
 
-where $ l(\textbf{x}_{i}, \textbf{y}_{i}; \textbf{w}) $ is the loss function of the prediction on example
-$(\textbf{x}_{i}, \textbf{y}_{i})$ made with model parameters $\textbf{w}$, K is the total learning nodes number, $\mathcal{P}_{k}$ is the set of indexes of data points on node k, $n_k = |P_k|$, and $\sum_{k=1}^{K} n_{k} = N$. This objective function can capture the different quantity of samples and statistical distribution of K nodes. Here, different nodes learn the global model jointly, which showing as the same loss function $l$ and parameters $\textbf{w}$.
+where $ l(\textbf{x}\_{i}, \textbf{y}\_{i}; \textbf{w}) $ is the loss function of the prediction on example $(\textbf{x}\_{i}, \textbf{y}\_{i})$ made with model parameters $\textbf{w}$, K is the total learning nodes number, $\mathcal{P}\_{k}$ is the set of indexes of data points on node k, $n_k = |P_k|$, and $\sum_{k=1}^{K} n_{k} = N$. This objective function can capture the different quantity of samples and statistical distribution of K nodes. Here, different nodes learn the global model jointly, which showing as the same loss function $l$ and parameters $\textbf{w}$.
+
 
 ### General Framework of Federated Multi-Task Learning
 
 As mentioned in the introduction, federated multi-task learning is a framework that can improve the performance by directly capturing the relationships among unbalanced data in multiple devices, which implies that it can address the statistical challenges in federated learning. The general formulation for federated multi-task learning is:
 
-$$
-\begin{equation}
+```latex
 \min_{\textbf{W}}\sum_{k=1}^{K}\frac{1}{n_k}\sum_{i=1}^{n_k}l_i(\textbf{x}_i,\textbf{y}_i;\textbf{w}_k) + \mathcal{R}(\textbf{W},\bm{\Omega}).
-\end{equation}
-$$
+```
 
-where $\textbf{W} = (\textbf{w}_1,\textbf{w}_2,...,\textbf{w}_K) \in \mathbb{R}^{d\times{m}}$ is the parameters for different tasks and $\mathcal{R}(\textbf{W},\bm{\Omega})$ is the regularization. Different multi-task framework is mainly different from the regularization term $\mathcal{R}$. The first term of the objective models the summation of different empirical loss of each node. The second term serves as a task-relationship regularizer with $\bm{\Omega}\in\mathbb{R}^{K\times{K}}$ being the covariance matrix \cite{zhang_convex_2012-1}. The covariance matrix is able to describe positive, negative and unrelated correlation between nodes, which can either known as priori or being measured while learning the models simultaneously. Each element $\bm{\Omega}_{i,j}$ is a value that indicates the similarity between two nodes. Here we use a bio-convex formulation in \cite{zhang_convex_2012-1}, which is a general case for other regularization methods, 
-\begin{equation}
+where $\textbf{W} = (\textbf{w}\_1,\textbf{w}\_2,...,\textbf{w}\_K) \in \mathbb{R}^{d \times{m}}$ is the parameters for different tasks and $\mathcal{R}(\textbf{W},\bm{\Omega})$ is the regularization. Different multi-task framework is mainly different from the regularization term $\mathcal{R}$.
+
+The first term of the objective models the summation of different empirical loss of each node. The second term serves as a task-relationship regularizer with $\bm{\Omega}\in\mathbb{R}^{K\times{K}}$ being the covariance matrix Zhang and Yeung \[2012\].
+
+The covariance matrix is able to describe positive, negative and unrelated correlation between nodes, which can either known as priori or being measured while learning the models simultaneously.
+
+Each element $\bm{\Omega}\_{i,j}$ is a value that indicates the similarity between two nodes. Here we use a bio-convex formulation in Zhang and Yeung \[2012\], which is a general case for other regularization methods,
+
+
+```latex
 \mathcal{R}(\textbf{W},\bm{\Omega}) = \lambda_ 1tr(\textbf{W}\bm{\Omega}^{-1}\textbf{W}^{T}) + \lambda_2||\textbf{W}||_F^2.
-\end{equation}
-where we constrain $\vec{W}$ with covariance matrix $\bm{\Omega}^{-1}$ through matrix trace $tr(\bm{W}\bm{\Omega}^{-1}\textbf{W}^{T})$. This means the closer $\textbf{w}_i$ and $\textbf{w}_j$ is, the larger the $\bm{\Omega}_{i,j}$ will be. Specifically if $\bm{\Omega}$ is an identity matrix, then each node is independent to each other. \\
-\cite{smith_federated_2017} proposed MOCHA based on the above multi-task learning framework. However, MOCHA can only handle convex functions in federated multi-task learning settings, which can not be generated to non-convex deep learning models. Our work generates federated multi-task learning framework to the non-convex DNN setting.
+```
+
+<!--<span>-->
+<!--where we constrain $\vec{W}$ with covariance matrix $\bm{\Omega}^{-1}$ through matrix trace $tr(\bm{W}\bm{\Omega}^{-1}\textbf{W}^{T})$. This means the closer $\textbf{w}_i$ and $\textbf{w}_j$ is, the larger the $\bm{\Omega}_{i,j}$ will be. Specifically if $\bm{\Omega}$ is an identity matrix, then each node is independent to each other. \\-->
+<!--\cite{smith_federated_2017} proposed MOCHA based on the above multi-task learning framework. However, MOCHA can only handle convex functions in federated multi-task learning settings, which can not be generated to non-convex deep learning models. Our work generates federated multi-task learning framework to the non-convex DNN setting.-->
+<!--</span>-->
 
 ### Federated Multi-Task Deep Learning Framework
 
@@ -67,7 +75,7 @@ DNNs are able to extract deep features from raw data. However, to the best of ou
 \end{aligned}
 ```
 
-where ~f(\cdot)~  represents DNNs feature mapping as shown in Figure 2(b). ~\bm{\theta}_k~ is the feature transformation network. $\bm{U}_k$ and $\vec{w}_k$ are output layer (e.g. softmax). The first constraint in (6) holds due to the fact that $\bm\Omega$ is defined as a task covariance matrix. The second constraint is used to restrict its complexity.
+where $f(\cdot)$ represents DNNs feature mapping as shown in Figure 2(b). $\bm{\theta}_k$ is the feature transformation network. $\bm{U}_k$ and $\vec{w}_k$ are output layer (e.g. softmax). The first constraint in (6) holds due to the fact that $\bm\Omega$ is defined as a task covariance matrix. The second constraint is used to restrict its complexity.
 
 ## Approach
 ```latex
@@ -91,16 +99,16 @@ where ~f(\cdot)~  represents DNNs feature mapping as shown in Figure 2(b). ~\bm{
 - Especially if you approach and final results aren’t
   impressive, please show us your progressive steps
 
-$$
-\begin{align*}
-y = y(x,t) &= A e^{i\theta} \\
+```latex
+\begin{aligned}
+y &= y(x,t) = A e^{i\theta} \\
 &= A (\cos \theta + i \sin \theta) \\
 &= A (\cos(kx - \omega t) + i \sin(kx - \omega t)) \\
 &= A\cos(kx - \omega t) + i A\sin(kx - \omega t)  \\
 &= A\cos \Big(\frac{2\pi}{\lambda}x - \frac{2\pi v}{\lambda} t \Big) + i A\sin \Big(\frac{2\pi}{\lambda}x - \frac{2\pi v}{\lambda} t \Big)  \\
 &= A\cos \frac{2\pi}{\lambda} (x - v t) + i A\sin \frac{2\pi}{\lambda} (x - v t)
-\end{align*}
-$$
+\end{aligned}
+```
 
 
 |||||
