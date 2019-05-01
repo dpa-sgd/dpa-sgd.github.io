@@ -1,16 +1,5 @@
-Federated Learning enables training models collaboratively over a large number of distributed edge devices without integrating their local data, while Federated Multi-Task Learning can further help to learn a personalized model for each device.
-However, they both pose particular statistical and systems challenges. To simultaneously address these two challenges, and focusing on training deep neural networks models collaboratively, we propose a decentralized approach with the framework and optimization co-design.
 
 ## Problem formulation
-
-```latex
-\begin{aligned}
-a &= b + c \\
-  &= e + f
-\end{aligned}
-```
-
-
 
 ### Statistical Challenges
 1. **Non-IID**: Each worker generates data in a non-i.i.d. (independent and identically distributed) manner with a distinct statistical distribution.
@@ -32,7 +21,7 @@ In practice, scattered data owners also demand personalized models rather than a
 
 ### General Definition of Federated Learning
 
-Following the first federated learning paper McMahan *et al.* [2016], we define the objective function for the federated setting as
+Following the first federated learning paper McMahan *et al.* \[2016\], we define the objective function for the federated setting as
 
 ```latex
 \begin{aligned}
@@ -65,10 +54,9 @@ Each element $\bm{\Omega}\_{i,j}$ is a value that indicates the similarity betwe
 \mathcal{R}(\textbf{W},\bm{\Omega}) = \lambda_ 1tr(\textbf{W}\bm{\Omega}^{-1}\textbf{W}^{T}) + \lambda_2||\textbf{W}||_F^2.
 ```
 
-<!--<span>-->
-<!--where we constrain $\vec{W}$ with covariance matrix $\bm{\Omega}^{-1}$ through matrix trace $tr(\bm{W}\bm{\Omega}^{-1}\textbf{W}^{T})$. This means the closer $\textbf{w}_i$ and $\textbf{w}_j$ is, the larger the $\bm{\Omega}_{i,j}$ will be. Specifically if $\bm{\Omega}$ is an identity matrix, then each node is independent to each other. \\-->
-<!--\cite{smith_federated_2017} proposed MOCHA based on the above multi-task learning framework. However, MOCHA can only handle convex functions in federated multi-task learning settings, which can not be generated to non-convex deep learning models. Our work generates federated multi-task learning framework to the non-convex DNN setting.-->
-<!--</span>-->
+where we constrain $\vec{W}$ with covariance matrix $\bm{\Omega}^{-1}$ through matrix trace $tr(\bm{W}\bm{\Omega}^{-1}\textbf{W}^{T})$. This means the closer $\textbf{w}_i$ and $\textbf{w}_j$ is, the larger the $\bm{\Omega}\_{i,j}$ will be. Specifically if $\bm{\Omega}$ is an identity matrix, then each node is independent to each other.
+Smith *et al.* \[2017\] proposed MOCHA based on the above multi-task learning framework. However, MOCHA can only handle convex functions in federated multi-task learning settings, which can not be generated to non-convex deep learning models. Our work generates federated multi-task learning framework to the non-convex DNN setting.
+
 
 ### Federated Multi-Task Deep Learning Framework
 
@@ -76,7 +64,7 @@ DNNs are able to extract deep features from raw data. However, to the best of ou
 
 ```latex
 \begin{aligned}
-& \begin{aligned}[t] \min_{\bm{\theta}, \vec{U},\vec{W},\bm{\Omega}}
+& \begin{aligned} \min_{\bm{\theta}, \vec{U},\vec{W},\bm{\Omega}}
 &\sum_{k=1}^{K}\frac{1}{n_k}\bigg[\bigg.\sum_{i=1}^{n_k}l(f(\vec{x}_i^{k},\bm{\theta}_k,\vec{U}_k,\vec{w}_k),\vec{y}_i^k) \\
 &+ \frac{1}{2}\lambda_ 1tr(\vec{W}_k\bm{\Omega}_k^{-1}\vec{W}_k^{T})\bigg]\bigg. + \frac{1}{2}\lambda_2||\vec{W}||_F^2\\
 &+\frac{1}{2}\lambda_3||\bm{\theta}||_F^2 + \frac{1}{2}\lambda_4||\vec{U}||_F^2, \end{aligned} \\
@@ -84,24 +72,87 @@ DNNs are able to extract deep features from raw data. However, to the best of ou
 \end{aligned}
 ```
 
-where $f(\cdot)$ represents DNNs feature mapping as shown in Figure 2(b). $\bm{\theta}_k$ is the feature transformation network. $\bm{U}_k$ and $\vec{w}_k$ are output layer (e.g. softmax). The first constraint in (6) holds due to the fact that $\bm\Omega$ is defined as a task covariance matrix. The second constraint is used to restrict its complexity.
+where $f(\cdot)$ represents DNNs feature mapping as shown in Figure \_\_. $\bm{\theta}\_k$ is the feature transformation network. $\bm{U}\_k$ and $\vec{w}\_k$ are output layer (e.g. softmax). The first constraint in \_\_ holds due to the fact that $\bm\Omega$ is defined as a task covariance matrix. The second constraint is used to restrict its complexity.
+
+In federated  learning situation, training should be conducted on each node respectively. One intuitive thought is the centralized network topology in McMahan *et al.* \[2016\], where one center node synchronously takes a weighted average parameters of every clients at each time step (Figure \_\_). However,  this model faces the problems that in DNNs situation, far more parameters need to be calculated and transferred. Each node has heterogeneous computing performance and network bandwidth (Figure \_\_). Setting one center node to synchronously collect all the parameters will induce high communication cost and low convergence speed. In order to overcome these problems, we design a decentralized topology, where each node only needs to share their parameters with neighbored nodes as shown in Figure \_\_, where there is no communication between worker one and worker 4. Abandoning the central node induces the problem that parameters cannot be exchanged and synchronized amongst every nodes, which means that the centralized optimization method can not be achieved on this topology. To this end, we propose a Decentralized Periodic Averaging SGD (DPA-SGD) to tackle the optimization problem in decentralized topology.
 
 ## Approach
+
+### Decentralized Periodic Averaging SGD
+
+As for decentralized topology, due to the disappearing of central node, same central averaging method can not be applied. In order to overcome this problem, we come up with a novel optimization method, Decentralized Periodic Averaging SGD (DPA-SGD). The main idea of DPA-SGD is that during the communication period $\tau$, local SGD is applied on each node respectively, and synchronizing all the parameters at every $\tau$ iterations amongst its connected neighbors. Due to this decentralized diverse connection, one global $\bm\Omega$ can not represent the individual correlation. So we propose to use a distinct covariance matrix $\bm{\Omega}\_k$ to represent their own mutual relationship. We also come up with an effective way to update the different $\bm\Omega_k$. To be specific, consider one particular node $m$ and its neighbor connected nodes as set $\mathcal{M}$.
+
+The new objective function can be defined as:
+
 ```latex
-\sum_{i=1}^n i^3 = \left( \frac{n(g(n)+1)} 2 \right) ^2 \bm\Omega
+\begin{aligned}
+& \begin{aligned} \min_{\bm{\theta}, \vec{U},\vec{W},\bm{\Omega}}
+&\sum_{k=1}^{K}\frac{1}{n_k}\bigg[\bigg.\sum_{i=1}^{n_k}l(f(\vec{x}_i^{k},\bm{\theta}_k,\vec{U}_k,\vec{w}_k),\vec{y}_i^k) \\
+&+ \frac{1}{2}\lambda_ 1tr(\vec{W}_k\bm{\Omega}_k^{-1}\vec{W}_k^{T})\bigg]\bigg. + \frac{1}{2}\lambda_2||\vec{W}||_F^2\\
+&+\frac{1}{2}\lambda_3||\bm{\theta}||_F^2 + \frac{1}{2}\lambda_4||\vec{U}||_F^2, \end{aligned} \\
+& \quad \text{s.t.} \quad  \bm{\Omega}_k \ge 0 \quad \text{and} \quad tr(\bm{\Omega}_k) = 1, \quad k = 1, 2, ... ,K.
+\end{aligned}
 ```
 
+where $\vec{W}\_k = (\vec{w}\_1,\vec{w}\_2,...,\vec{w}\_m,...\vec{w}\_{|\mathcal{M}|})\in\mathbb{R}^{d\times|\mathcal{M}|}$ is the parameters for $m$ and its neighbor tasks. The matrix $\bm{\Omega}\_k\in\mathbb{R}^{|\mathcal{M}|\times{|\mathcal{M}|}}$ represents the correlation amongst nodes in set $\mathcal{M}$. Here in order to record the entire nodes connection in the network, we introduce a *node connection matrix* $\vec{M}\in\mathbb{R}^{K\times{K}}$ represents the neighbor relationships for each nodes, where $M_{i, j}$ is a value that indicates node $i$ and $j$ are connected as shown in Figure \_\_, where worker one is only connected with worker two and four. Note that, if $\vec{M} = \vec{I}$ (Identity matrix), then every nodes are independent and update the parameters respectively. If $\vec{M} = \vec{J}$ (one for each element), the model is degenerated into centralized model. We study the model performance under sparse matrix $\vec{M}$ and find that similar results can be achieved as a ring network topology, which each node is only connected with its nearby two nodes, as illustrated in Figure \_\_.
 
-###  Algorithm
+To solve this non-convex problem, we apply the alternating optimization method  Zhang and Yeung \[2012\], where alternately updating parameters $\vec{X} = (\vec{W, U},\bm{\theta})$ and $\bm\Omega$.
 
+*Optimizing* $\bm\theta, \vec{W}$ and $\vec{U}$: For simplicity, we define set $\Xi = (\bm\Omega_1, \bm\Omega_2,...,\bm\Omega_K)$ to represent the correlation matrix for every nodes. Fixing $\Xi$, we can use SGD method to update $\bm\theta, \vec{W}$ and $\vec{U}$ jointly. Our problem can then be reformulated as:
+
+```latex
+ G(\vec{W}, \vec{U}, \bm\theta|\Xi) = \sum_{k=1}^{K}\frac{1}{n_k} \bigg[\bigg. \sum_{i=1}^{n_k}l(f(\textbf{x}_i^{k},\bm{\theta}_k,\textbf{U}_k,\textbf{w}_k),\textbf{y}_i^k)\\ + \frac{1}{2}\lambda_1tr(\textbf{W}_k\bm{\Omega}_k^{-1}\textbf{W}_k^{T})\bigg]\bigg.+ \frac{1}{2}\lambda_2||\textbf{W}||_F^2\\
++ \frac{1}{2}\lambda_3||\bm{\theta}||_F^2 + \frac{1}{2}\lambda_4||\textbf{U}||_F^2
+```
+
+We can calculate the gradient of $\vec{W}$, $\vec{U}$ and $\bm\theta$ respectively. Let $L = \sum_{k=1}^{K}\frac{1}{n_k}\sum_{i=1}^{n_k}l(f(\bm{x}\_i^{k}, \bm{\theta}\_k,\bm{u}\_k,\bm{w}\_k),\bm{y}\_i^k)$. Then the gradient formulations for each node are:
+
+```latex
+\frac{\partial{G(\vec{W}, \vec{U}, \bm\theta|\Xi)}}{\partial{\vec{w}_k}} = \frac{\partial{L}}{\partial{\vec{w}_k}} + \lambda_1\sum_{i=1}^{\mathcal{|M|}}\frac{1}{n_i}{\vec{w}_k}\bm\Omega_i^{-1}+ \lambda_2\vec{w}_k
+```
+where the summation is amongst all the nodes connected to node $k$,
+
+```latex
+\frac{\partial{G(\vec{W}, \vec{U}, \bm\theta|\Xi)}}{\partial \bm\theta_k} = \frac{\partial{L}}{\partial\bm\theta_k} + \lambda_3\bm\theta_k,
+```
+
+```latex
+\frac{\partial{G(\vec{W}, \vec{U}, \bm\theta|\Xi)}}{\partial{\vec{u}_k}} = \frac{\partial{L}}{\partial{\vec{u}_k}} + \lambda_4\vec{u}_k
+```
+
+*Optimizing* $\Xi$: In paper Zhang and Yeung \[2012\], an analytical solution form is given for $\bm\Omega$:
+
+```latex
+\bm\Omega = \frac{(\vec{W}^T\vec{W})^\frac{1}{2}}{tr((\vec{W}^T\vec{W})^{\frac{1}{2}})}
+```
+
+Apparently, if $\bm{w}\_i$ and $\bm{w}\_j$ are close to each other, $\bm{\Omega}$ will be large. However, the missing central node forbidding to average parameters globally. So here we propose a novel way to update each $\bm\Omega_k\in\Xi$:
+
+```latex
+\bm\Omega_{t+1}^{(k)} \leftarrow \eta\frac{1}{|\mathcal{M}|}({\sum_{i=1}^{|\mathcal{M}|}}\frac{1}{n_i}\bm\Omega_{t}^{(i)} + \frac{(\vec{W}_k^T\vec{W}_k)^\frac{1}{2}}{tr((\vec{W}_k^T\vec{W}_k)^{\frac{1}{2}})})
+```
+
+The first averaging term can incorporate the nearby nodes correlation into its own and the second term captures the new correlation between its neighbors as shown in Figure \_\_.
+
+
+### Algorithm
+
+In general, the algorithm of DPA-SGD can be summarized as: while in local update period, each node calculates the gradient $g(\vec{X}\_t^{(i)})$ based on one mini-batch of data and then update $\vec{X}^{(i)}$; For every synchronization per $\tau$ update, the novel update way of $\bm\Omega$ is conducted.
+
+**\<Replace with Algorithm\>**
 
 ## Comparison to the past works
 
-- What has been done before
+Here we illustrate system-wise advantages of DPA-SGD:
 
-- What is new about your problem or approach
+**\<Replace with Advantage Fig\>**
 
-  - In other words, why is your work cool?
+**Faster convergence speed**. Figure \_\_ illustrates three reasons that DHA-SGD can speed up convergence.
+1. *Periodic averaging* can alleviate the communication delay by reducing times of synchronization which only happen periodically. As we can see in figure 4, the yellow blocks (communication) will largely be deleted due to the periodic averaging mechanism.
+1. This idle time can also be significantly reduced through periodic averaging as shown in Figure 4.
+1. In the decentralized topology, because a worker only needs to exchange gradients with its neighbors, another worker with slow computation and communication will not interrupt its iteration. For example, worker 2 in the above figure can synchronize earlier without waiting for worker 4. Thus, DHA-SGD can largely reduce convergence time.
+
+**Fewer communication rounds**. The periodic averaging strategy can reduce the number of communication rounds. Although our work focuses on optimizing the ratio of computation and communication rather than improving the communication cost for each iteration, gradient compression method (Deep Gradient Compression \[Lin *et al.*, 2017\]) for each iteration can directly extendable to to our algorithm in a practical system.
 
 ## Results
 
