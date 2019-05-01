@@ -247,6 +247,9 @@ better convergence.
 ### Appendix III: Code Snippet
 ![Code snippet of our Federated Learning System](./img/code1.png)
 
+### Appendix IV: Poster
+<figure><a href="/attachment/fl-dpa-sgd-poster.pdf"><img src="./img/fl-dpa-sgd-poster.png"></a><figcaption>Poster (click to see the pdf)</figcaption></figure>
+
 ----
 
 # Citations
