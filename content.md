@@ -105,7 +105,7 @@ The new objective function can be defined as:
 
 where $\vec{W}\_k = (\vec{w}\_1,\vec{w}\_2,...,\vec{w}\_m,...\vec{w}\_{|\mathcal{M}|})\in\mathbb{R}^{d\times|\mathcal{M}|}$ is the parameters for $m$ and its neighbor tasks. The matrix $\bm{\Omega}\_k\in\mathbb{R}^{|\mathcal{M}|\times{|\mathcal{M}|}}$ represents the correlation amongst nodes in set $\mathcal{M}$. Here in order to record the entire nodes connection in the network, we introduce a *node connection matrix* $\vec{M}\in\mathbb{R}^{K\times{K}}$ represents the neighbor relationships for each nodes, where $M_{i, j}$ is a value that indicates node $i$ and $j$ are connected as shown in Figure 3, where worker one is only connected with worker two and four. Note that, if $\vec{M} = \vec{I}$ (Identity matrix), then every nodes are independent and update the parameters respectively. If $\vec{M} = \vec{J}$ (one for each element), the model is degenerated into centralized model. We study the model performance under sparse matrix $\vec{M}$ and find that similar results can be achieved as a ring network topology, which each node is only connected with its nearby two nodes, as illustrated in Figure 3.
 
-![Figure 3: Decentralized Periodic Averaging SGD](./img/decentralizedSGD.png)
+![Figure 3: Decentralized Periodic Averaging SGD](./img/decentralizedSGD.jpg)
 
 To solve this non-convex problem, we apply the alternating optimization method  Zhang and Yeung \[2012\], where alternately updating parameters $\vec{X} = (\vec{W, U},\bm{\theta})$ and $\bm\Omega$.
 
@@ -152,6 +152,30 @@ In general, the algorithm of DPA-SGD can be summarized as: while in local update
 
 ![Algorithm 1](./img/alg1.png)
 
+### Advantages of Our Algorithm
+
+Here we illustrate system-wise advantages of DPA-SGD:
+
+![Figure 4: Illustration of training time reducing due to the mechanism of DPA-SGD](./img/advantage.png)
+
+**Faster convergence speed**. Figure 4 illustrates three reasons that DHA-SGD can speed up convergence.
+1. *Periodic averaging* can alleviate the communication delay by reducing times of synchronization which only happen periodically. As we can see in Figure 4, the yellow blocks (communication) will largely be deleted due to the periodic averaging mechanism.
+1. This idle time can also be significantly reduced through periodic averaging as shown in Figure 4.
+1. In the decentralized topology, because a worker only needs to exchange gradients with its neighbors, another worker with slow computation and communication will not interrupt its iteration. For example, worker 2 in the above figure can synchronize earlier without waiting for worker 4. Thus, DHA-SGD can largely reduce convergence time.
+
+**Fewer communication rounds**. The periodic averaging strategy can reduce the number of communication rounds. Although our work focuses on optimizing the ratio of computation and communication rather than improving the communication cost for each iteration, gradient compression method (Deep Gradient Compression \[Lin *et al.*, 2017\]) for each iteration can directly extendable to to our algorithm in a practical system.
+
+
+### System Design
+
+![Figure 5: Federated Learning System Design and Protocol](./img/system1.png)
+
+We have developed a real-world decentralized federated learning system. Our system is currently deployed in a cluster environment, consisting of 24 physical machines, each supporting 48 CPU cores. Suppose we run one process per CPU core, this system can run up to 1152 workers for parallel training. Our federated learning system enables centralized and decentralization training while supporting the Federated multi-task learning framework. It also supports user and training management in the Federated Learning scenario. As shown in Figure 5 (Upper), it includes training process management such as topology generation, user selection, configuration dispatching, on-device training, and statistics collection. In the topological generation step, we can select the appropriate eigenvalues for the topology matrix according to our the convergence property analysis, which determines the sparseness of the network topology to balance the model accuracy and the training speed. The user selection process can configure different strategies to select distinct users. Each user only requires training once for a model. In our experiment, users are selected according to the LEAF data set. This process can be further optimized in the future to choose users who are more meaningful to the model.
+
+The software architecture of each worker is shown in Figure 5 (Lower). Each work can be an IoT device, smartphone or the edge server.  It is an abstract architecture design for the on-device software system which unifies the system architecture for different on-device operating systems such as Android or iOS for the smartphone and the linux edge server. For the edge server, we implement this system design in a Python environment. For the smartphone, we develop the training worker system based on Android and iOS. The low-level communication is an abstract layer. In the edge server environment, we use the MPI protocol for exchanging gradient or other necessary information. As we can see, the communication sending and receiving threads are independent of the training threads. The collaborate through message queues. Currently, we only disclose the implementation of the MPI communication protocol in the source code. In the future, we consider open source our code to support more on-device platforms.
+
+To put it simply, another contribution of this paper is that we publish a practical federated learning system that can promote further research on distributed learning and especially federated learning. Our code is published at [https://github.com/chaoyanghe/FederatedLearning](https://github.com/chaoyanghe/FederatedLearning).
+
 ## Comparison to the Past Works
 
 ### Past Works
@@ -175,28 +199,11 @@ Decentralized SGD, another approach to reducing communication, was successfully 
 
 **Our work aims to design a novel SGD algorithm for our multi-task deep learning framework**, which **can leverage the advantages of periodic averaging SGD and decentralized SGD**. We called it as Decentralized Periodic Averaging SGD. Although recent work \[Wang and Joshi, 2018\] has this idea preliminarily, it does not provide adequate theoretical analysis and empirical evaluation in the federated setting.
 
-
-### Advantages of Our Algorithm
-
-Here we illustrate system-wise advantages of DPA-SGD:
-
-![Figure 4: Illustration of training time reducing due to the mechanism of DPA-SGD](./img/advantage.png)
-
-**Faster convergence speed**. Figure 4 illustrates three reasons that DHA-SGD can speed up convergence.
-1. *Periodic averaging* can alleviate the communication delay by reducing times of synchronization which only happen periodically. As we can see in Figure 4, the yellow blocks (communication) will largely be deleted due to the periodic averaging mechanism.
-1. This idle time can also be significantly reduced through periodic averaging as shown in Figure 4.
-1. In the decentralized topology, because a worker only needs to exchange gradients with its neighbors, another worker with slow computation and communication will not interrupt its iteration. For example, worker 2 in the above figure can synchronize earlier without waiting for worker 4. Thus, DHA-SGD can largely reduce convergence time.
-
-
-![Figure 5: Federated Learning System Design and Protocol](./img/system1.png)
-
-**Fewer communication rounds**. The periodic averaging strategy can reduce the number of communication rounds. Although our work focuses on optimizing the ratio of computation and communication rather than improving the communication cost for each iteration, gradient compression method (Deep Gradient Compression \[Lin *et al.*, 2017\]) for each iteration can directly extendable to to our algorithm in a practical system.
-
-
 ## Results
 
-- Especially if you approach and final results aren’t
-  impressive, please show us your progressive steps
+Both the baseline model and the our model were tested on three Sort-of-CLEVR datasets which have 2, 4, or 6 shapes in each image, respectively.
+
+![Accurady for FedAvg and Decentrailized (Round number)](./img/accuracy/acc1-time.png)
 
 ## Appendix
 ### Convergence Analysis
