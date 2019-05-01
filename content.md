@@ -140,8 +140,32 @@ The first averaging term can incorporate the nearby nodes correlation into its o
 In general, the algorithm of DPA-SGD can be summarized as: while in local update period, each node calculates the gradient $g(\vec{X}\_t^{(i)})$ based on one mini-batch of data and then update $\vec{X}^{(i)}$; For every synchronization per $\tau$ update, the novel update way of $\bm\Omega$ is conducted.
 
 **\<Replace with Algorithm\>**
+![Algorithm 1](./img/alg1.png)
 
-## Comparison to the past works
+## Comparison to the Past Works
+
+### Past Works
+
+#### Federated Multi-Task Learning
+
+Early examples of research into federated learning. To address both statistical and system challenges, \[Smith *et al.*, 2017\] and \[Caldas *et al*. 2018\] propose a multi-task learning framework for federated learning and its related optimization algorithm, which extends early works from distributed machine learning, including SDCAShalev-Shwartz and Zhang \[2013\]; Yang \[2013\]; Yang *et al.* \[2013\] and COCOAJaggi *et al.* \[2014\]; Ma *et al.* \[2015\]; Smith *et al.* \[2016\]. The main limitation of Smith *et al.* \[2017\] and Caldas *et al.* \[2018\], however, is that **strong duality is only guaranteed when the objective function is convex, which can not be generalized to the non-convex setting, especially deep neural networks**.
+
+Another line of work related to federated multi-task learning is the cloud-based distributed multi-task learning \[Ahmed *et al.*, 2014; Jin *et al.*, 2015; Mateos-Núñez *et al.*, 2015; Wang *et al.*, 2016; Baytas *et al.*, 2016; Liu *et al.*, 2017\]. However, **their assumption that the same amount of work is done locally on each node is prohibitive in federated settings**, and none of these works take into account the systems challenges that arise in the federated setting.
+
+In our work, we focus on training the deep learning model in the federated setting. To be more specific, **in this work we further extend previous works to a generic multi-task deep learning framework and a more efficient optimization method. Different from previous works, we propose a decentralized approach for federated learning**.
+
+
+#### Stochastic Gradient Decent Optimization
+
+In large scale distributed deep learning, to address the communication bottleneck, synchronized mini-batch SGD, which increase the computation to communication ratio, is widely used in the parameter server framework \[Dean *et al.*; Li *et al.*, 2014; Cui *et al.*, 2014\] and popular deep learning systems such as Tensorflow \[Abadi *et al.*, 2016\] and PyTorch \[Paszke *et al.*, 2017\].
+
+Compared to this synchronized mini-batch SGD, Federated Averaging(FedAvg) SGD \[Koneˇcný *et al.*, 2016\] in the federated setting empirically shows it has less communication rounds and it is also robust to non-IID data, which is now the state-of-the-art SGD algorithm for federated learning.
+
+Decentralized SGD, another approach to reducing communication, was successfully applied to deep learning \[Jin *et al.*, 2016; Jiang *et al.*, 2017; Lian *et al.*, 2017\]. Instead of synchronizing with all workers, a worker in the decentralized SGD framework only needs to exchange gradient with its neighbors. Therefore, this sparse-connected topology can reduce the overall communication per iteration.
+
+**Our work aims to design a novel SGD algorithm for our multi-task deep learning framework**, which **can leverage the advantages of periodic averaging SGD and decentralized SGD**. We called it as Decentralized Periodic Averaging SGD. Although recent work \[Wang and Joshi, 2018\] has this idea preliminarily, it does not provide adequate theoretical analysis and empirical evaluation in the federated setting.
+
+### Our design
 
 Here we illustrate system-wise advantages of DPA-SGD:
 
