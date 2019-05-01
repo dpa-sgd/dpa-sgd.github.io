@@ -1,6 +1,9 @@
-To clarify the differences between various traditional systems and our system , we illustrates the key design in Figure 1; Figure 1(a) is Cloud-Based Distributed Learning while Figure (b) is Centralized Federated Learning; Figure (c) and Figure (d) are Decentralized Federated Learning and Centralized Communication Topology with Decentralized Parameter Exchanging Topology respectively.
+In the cloud-based environment, distributed deep learning systems such as Tensorflow and PyTorch is widespread in various domains, but they are typically built based on the parameter server, which
+requires data integrated into one place (a server or a cluster) to train a model\[Dean *et al.*; Li *et al.*, 2014; Cui *et al.*, 2014; Abadi *et al.*, 2016; Paszke *et al.*, 2017\], as shown in Figure 1(a). Increasing
+practical constraints lead this data integration difficult or impossible, including data privacy and confidentiality, intellectual property protection, and law constraints. A promising solution to these
+problems is called Federated Learning \[McMahan *et al.*, 2016\]. As shown in Figure 1(b), Federated Learning enables collaboratively training on edge devices or edge data centers through exchanging parameters or gradients without centralizing their scattered data (In this work, we use both worker and node to represent edge devices or edge data centers). Representative examples happen in various domains such as Mobile Internet, health, and finance domains \[McMahan and Ramage, 2017, Liu *et al.*, 2018a, Liu *et al.*, 2018b\].
 
-![Figure 1: Federated Multi-Task Learning Topology](./img/intro-fig.png)
+![Figure 1: Federated Multi-Task Learning Topology. (a) Cloud-Based Distributed Learning; (b) Centralized Federated Learning; (c) Decentralized Federated Learning; (d) Centralized Communication Topology with Decentralized Parameter Exchanging Topology.](./img/intro-fig.png)
 
 ## Problem formulation
 
@@ -176,11 +179,9 @@ The software architecture of each worker is shown in Figure 5 (Lower). Each work
 
 To put it simply, another contribution of this paper is that we publish a practical federated learning system that can promote further research on distributed learning and especially federated learning. Our code is published at [https://github.com/chaoyanghe/FederatedLearning](https://github.com/chaoyanghe/FederatedLearning).
 
-## Comparison to the Past Works
+## Comparison to Previous Works
 
-### Past Works
-
-#### Federated Multi-Task Learning
+### Federated Multi-Task Learning
 
 Early examples of research into federated learning. To address both statistical and system challenges, \[Smith *et al.*, 2017\] and \[Caldas *et al*. 2018\] propose a multi-task learning framework for federated learning and its related optimization algorithm, which extends early works from distributed machine learning, including SDCAShalev-Shwartz and Zhang \[2013\]; Yang \[2013\]; Yang *et al.* \[2013\] and COCOAJaggi *et al.* \[2014\]; Ma *et al.* \[2015\]; Smith *et al.* \[2016\]. The main limitation of Smith *et al.* \[2017\] and Caldas *et al.* \[2018\], however, is that **strong duality is only guaranteed when the objective function is convex, which can not be generalized to the non-convex setting, especially deep neural networks**.
 
@@ -189,7 +190,7 @@ Another line of work related to federated multi-task learning is the cloud-based
 In our work, we focus on training the deep learning model in the federated setting. To be more specific, **in this work we further extend previous works to a generic multi-task deep learning framework and a more efficient optimization method. Different from previous works, we propose a decentralized approach for federated learning**.
 
 
-#### Stochastic Gradient Decent Optimization
+### Stochastic Gradient Decent Optimization
 
 In large scale distributed deep learning, to address the communication bottleneck, synchronized mini-batch SGD, which increase the computation to communication ratio, is widely used in the parameter server framework \[Dean *et al.*; Li *et al.*, 2014; Cui *et al.*, 2014\] and popular deep learning systems such as Tensorflow \[Abadi *et al.*, 2016\] and PyTorch \[Paszke *et al.*, 2017\].
 
