@@ -194,7 +194,7 @@ div#markdown-body h2 {
     text-align: center;
     padding-top: 5px;
     padding-bottom: 5px;
-    font-size: 2em;
+    font-size: 2.5em;
 }
 
 div#markdown-body h3 {
@@ -202,7 +202,7 @@ div#markdown-body h3 {
     text-align: center;
     padding-top: 0px;
     padding-bottom: 10px;
-    font-size: 1.2em;
+    font-size: 1em;
 }
 
 div#markdown-body hr{
