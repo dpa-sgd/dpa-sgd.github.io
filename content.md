@@ -1,6 +1,9 @@
 
 ## Problem formulation
 
+
+![Figure 1: Federated Multi-Task Learning Topology. (a) Cloud-Based Distributed Learning; (b) Centralized Federated Learning; (c) Decentralized Federated Learning; (d) Centralized Communication Topology with Decentralized Parameter Exchanging Topology.](./img/intro-fig.png)
+
 ### Statistical Challenges
 1. **Non-IID**: Each worker generates data in a non-i.i.d. (independent and identically distributed) manner with a distinct statistical distribution.
 1. **Unbalanced Local Data**: Workers have different quantity of data sample due to their different behaviors.
@@ -18,6 +21,8 @@ These three characteristics make communication cost and low-speed training becom
 
 
 In practice, scattered data owners also demand personalized models rather than a global model for all owners. They hope to not only get help from other owners’ data to train a high accuracy model but also to gain their personalized models which can represent their unique data properties. Thus, to simultaneously address statistical and system challenges is the primary research direction of federated learning.
+
+![Figure 2: Federated Multi-Task Deep Learning Framework](./img/decentralizedFramework.png)
 
 ### General Definition of Federated Learning
 
@@ -72,13 +77,18 @@ DNNs are able to extract deep features from raw data. However, to the best of ou
 \end{aligned}
 ```
 
-where $f(\cdot)$ represents DNNs feature mapping as shown in Figure \_\_. $\bm{\theta}\_k$ is the feature transformation network. $\bm{U}\_k$ and $\vec{w}\_k$ are output layer (e.g. softmax). The first constraint in \_\_ holds due to the fact that $\bm\Omega$ is defined as a task covariance matrix. The second constraint is used to restrict its complexity.
+where $f(\cdot)$ represents DNNs feature mapping as shown in Figure 2(b). $\bm{\theta}\_k$ is the feature transformation network. $\bm{U}\_k$ and $\vec{w}\_k$ are output layer (e.g. softmax). The first constraint in \_\_ holds due to the fact that $\bm\Omega$ is defined as a task covariance matrix. The second constraint is used to restrict its complexity.
 
-In federated  learning situation, training should be conducted on each node respectively. One intuitive thought is the centralized network topology in McMahan *et al.* \[2016\], where one center node synchronously takes a weighted average parameters of every clients at each time step (Figure \_\_). However,  this model faces the problems that in DNNs situation, far more parameters need to be calculated and transferred. Each node has heterogeneous computing performance and network bandwidth (Figure \_\_). Setting one center node to synchronously collect all the parameters will induce high communication cost and low convergence speed. In order to overcome these problems, we design a decentralized topology, where each node only needs to share their parameters with neighbored nodes as shown in Figure \_\_, where there is no communication between worker one and worker 4. Abandoning the central node induces the problem that parameters cannot be exchanged and synchronized amongst every nodes, which means that the centralized optimization method can not be achieved on this topology. To this end, we propose a Decentralized Periodic Averaging SGD (DPA-SGD) to tackle the optimization problem in decentralized topology.
+In federated learning situation, training should be conducted on each node respectively. One intuitive thought is the centralized network topology in McMahan *et al.* \[2016\], where one center node synchronously takes a weighted average parameters of every clients at each time step (Figure 2(a)). However,  this model faces the problems that in DNNs situation, far more parameters need to be calculated and transferred. Each node has heterogeneous computing performance and network bandwidth (Figure (b))). Setting one center node to synchronously collect all the parameters will induce high communication cost and low convergence speed. In order to overcome these problems, we design a decentralized topology, where each node only needs to share their parameters with neighbored nodes as shown in Figure 2(c)), where there is no communication between worker one and worker 4. Abandoning the central node induces the problem that parameters cannot be exchanged and synchronized amongst every nodes, which means that the centralized optimization method can not be achieved on this topology. To this end, we propose a Decentralized Periodic Averaging SGD (DPA-SGD) to tackle the optimization problem in decentralized topology.
 
 ## Approach
 
 ### Decentralized Periodic Averaging SGD
+
+![Figure 3: Decentralized Periodic Averaging SGD](./img/decentralizedSGD.png)
+
+![](./img/advantage1.png)
+![Figure 4: Illustration of training time reducing due to the mechanism of DPA-SGD](./img/advantage2.png)
 
 As for decentralized topology, due to the disappearing of central node, same central averaging method can not be applied. In order to overcome this problem, we come up with a novel optimization method, Decentralized Periodic Averaging SGD (DPA-SGD). The main idea of DPA-SGD is that during the communication period $\tau$, local SGD is applied on each node respectively, and synchronizing all the parameters at every $\tau$ iterations amongst its connected neighbors. Due to this decentralized diverse connection, one global $\bm\Omega$ can not represent the individual correlation. So we propose to use a distinct covariance matrix $\bm{\Omega}\_k$ to represent their own mutual relationship. We also come up with an effective way to update the different $\bm\Omega_k$. To be specific, consider one particular node $m$ and its neighbor connected nodes as set $\mathcal{M}$.
 
@@ -139,7 +149,6 @@ The first averaging term can incorporate the nearby nodes correlation into its o
 
 In general, the algorithm of DPA-SGD can be summarized as: while in local update period, each node calculates the gradient $g(\vec{X}\_t^{(i)})$ based on one mini-batch of data and then update $\vec{X}^{(i)}$; For every synchronization per $\tau$ update, the novel update way of $\bm\Omega$ is conducted.
 
-**\<Replace with Algorithm\>**
 ![Algorithm 1](./img/alg1.png)
 
 ## Comparison to the Past Works
@@ -172,7 +181,7 @@ Here we illustrate system-wise advantages of DPA-SGD:
 **\<Replace with Advantage Fig\>**
 
 **Faster convergence speed**. Figure \_\_ illustrates three reasons that DHA-SGD can speed up convergence.
-1. *Periodic averaging* can alleviate the communication delay by reducing times of synchronization which only happen periodically. As we can see in figure 4, the yellow blocks (communication) will largely be deleted due to the periodic averaging mechanism.
+1. *Periodic averaging* can alleviate the communication delay by reducing times of synchronization which only happen periodically. As we can see in Figure 4, the yellow blocks (communication) will largely be deleted due to the periodic averaging mechanism.
 1. This idle time can also be significantly reduced through periodic averaging as shown in Figure 4.
 1. In the decentralized topology, because a worker only needs to exchange gradients with its neighbors, another worker with slow computation and communication will not interrupt its iteration. For example, worker 2 in the above figure can synchronize earlier without waiting for worker 4. Thus, DHA-SGD can largely reduce convergence time.
 
@@ -221,28 +230,6 @@ The observation space can be composed of the following:
     - Baxter agent's internal state contains the positions of all joints and rotations relative to the base of the robot.
     - Cursor agent's internal state contains the XYZ coordinates of each cursor.
 
-
-
-<!--After training, the environment will test the robot on unseen furniture configurations. The environment provides variability in compositions, visual appearances, object shapes, and physical properties. The environment contains a diverse set of furniture including chair, table, cabinet, bookcase, desk, shelf, and tv unit; and it supports changes in light condition, background, texture, and colors. For a robot to generalize this tasks well, it has to master a hierarchy of skills that are curricula to autonomous manipulation:
-- Visual sensing
-  - Test robots’s ability to understand 3D scenery
-  - The robots must identify the shape of each 3D furniture part and understand the 3D structure of the goal furniture to know where a furniture part belongs in the goal furniture
-- Step by step planing
-  - Test robots’s ability to make complex sequential decisions with a long horizon
-  - The robots must deduce the order of  how to assembling each parts from either the manual or the goal furniture
--  Low level control
-  - Test robot’s ability to conducting low level manipulation tasks like picking, placing and inserting
-  - Robot must be able to manipulate the furniture pieces precisely to assemble them by connecting joints
-
-# Some Details
-- Implementation
-  - The Unity3D game engine with ML Agent is used as a back-end framework to support realistic rendering and fast simulation
-  - To help transfer learning from simulated to real-world environments, all the furniture models are created following the IKEA’s official user’s manuals with a minor simplification in small details such as carving and screws
-- In addition to the observation, the environment can provide the final configuration, as well as the furniture assembly instruction in the form of intermediate observations of furniture construction
-- Robot Agent
-  - The environment contains two robotic arms and the arms can assemble furniture by repeating the following process: picking two pieces, moving them toward each other, aligning two pieces, and attaching them
-  - The environment will support abstraction for robot control including high-level action (e.g., pick A, attach A and B), discrete control (e.g., move forward, rotate clockwise), and joint velocity control
-  -->
 
 ----
 
