@@ -140,7 +140,7 @@
                 </div>
             </div>
         </header>
-
+				
         <!-- Main Body -->
         <div class="main-body">
             <div class="w3-container">
@@ -149,11 +149,18 @@
                     <!-- Links -->
                     <div class="link-container">
                         <ul class="horizontal-list">
-                            <li><button class="w3-button waves-effect waves-light w3-card-4 grey lighten-2 w3-round-large"><i class="fas fa-file-alt"></i> Tech Report</button></li>
-                            <li><button class="w3-button waves-effect waves-light w3-card-4 grey lighten-2 w3-round-large"><i class="fas fa-code"></i> Code</button></li>
+                            <li>
+								<a style="color: black;"><span class="w3-button waves-effect waves-light w3-card-4 grey lighten-2 w3-round-large"><i class="fas fa-file-alt"></i> Paper Preprint</span></a>
+							</li>
+                            <li>
+								<a href="https://github.com/chaoyanghe/FederatedLearning" style="color: black;"><span class="w3-button waves-effect waves-light w3-card-4 grey lighten-2 w3-round-large"><i class="fas fa-code"></i> Code</span></a>
+							</li>
                         </ul>
                     </div>
-
+					
+					<!-- TODO: with out this break line, the links might float to incorrect location, need fix -->
+					<br>
+					
                     <!-- Markdown Body -->
                     <div id="markdown-body"></div>
                 </div>
