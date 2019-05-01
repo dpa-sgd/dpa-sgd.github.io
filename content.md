@@ -87,8 +87,8 @@ In federated learning situation, training should be conducted on each node respe
 
 ![Figure 3: Decentralized Periodic Averaging SGD](./img/decentralizedSGD.png)
 
-![](./img/advantage1.png)
-![Figure 4: Illustration of training time reducing due to the mechanism of DPA-SGD](./img/advantage2.png)
+
+![Figure 4: Illustration of training time reducing due to the mechanism of DPA-SGD](./img/advantage.png)
 
 As for decentralized topology, due to the disappearing of central node, same central averaging method can not be applied. In order to overcome this problem, we come up with a novel optimization method, Decentralized Periodic Averaging SGD (DPA-SGD). The main idea of DPA-SGD is that during the communication period $\tau$, local SGD is applied on each node respectively, and synchronizing all the parameters at every $\tau$ iterations amongst its connected neighbors. Due to this decentralized diverse connection, one global $\bm\Omega$ can not represent the individual correlation. So we propose to use a distinct covariance matrix $\bm{\Omega}\_k$ to represent their own mutual relationship. We also come up with an effective way to update the different $\bm\Omega_k$. To be specific, consider one particular node $m$ and its neighbor connected nodes as set $\mathcal{M}$.
 
@@ -178,7 +178,7 @@ Decentralized SGD, another approach to reducing communication, was successfully 
 
 Here we illustrate system-wise advantages of DPA-SGD:
 
-**\<Replace with Advantage Fig\>**
+![Figure 5: Illustration of training time reducing due to the mechanism of DPA-SGD](./img/advantage.png)
 
 **Faster convergence speed**. Figure \_\_ illustrates three reasons that DHA-SGD can speed up convergence.
 1. *Periodic averaging* can alleviate the communication delay by reducing times of synchronization which only happen periodically. As we can see in Figure 4, the yellow blocks (communication) will largely be deleted due to the periodic averaging mechanism.
