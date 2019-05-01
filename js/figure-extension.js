@@ -14,7 +14,7 @@
     }
 }(function (showdown) {
 
-    var fig = '<figure>' + '<img src="%1" alt="%2" title="%4">' + '<figcaption>%3</figcaption>' + '</figure>';
+    var fig = '<figure>' + '<img src="%1" alt="%2" title="%4" onclick="fullscreenImg(this)">' + '<figcaption>%3</figcaption>' + '</figure>';
     var imgRegex = /(?:<p>)?<img.*?src="(.+?)".*?alt="(.*?)"(.*?)\/?>(?:<\/p>)?/gi;
 
     // loading extension into shodown
