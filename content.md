@@ -210,13 +210,13 @@ Decentralized SGD, another approach to reducing communication, was successfully 
 
 This table is a brief statistic of the dataset (LEAF) that we are using in the experiments. To be specific, FEMNIST is a handwritten digit database, where image classification problem can be conducted based on this dataset. Sent140 is a text dataset, which allows you to discover the sentiment of a brand or product. Shakespeare is also a text dataset, however the objective here is try to learn the pattern of the sentences and generate similar text style.
 
-![Accurady for FedAvg Single-task and Ring DPA-SGD Multi-task vs Round number](./img/accuracy/acc2-round_number.png)
+![accuracy for FedAvg Single-task and Ring DPA-SGD Multi-task vs Round number](./img/accuracy/acc2-round_number.png)
 
 We compare the performance between FedAvg, the current state-of-the-art Federated Learning algorithm, and our DPA-SGD on Multi-Task Learning Framework (DPA-SGD-MTL) with a ring topology network. From the Figure, we clearly see that the training speed is around 20% faster than the FedAvg. The Ring DPA-SGD-MTL’s accuracy is also comparable to the FedAvg.
 
 |||
 |:---:|:---:|
-|![Accurady for FedAvg-MTL and Decentralized vs time](./img/accuracy/acc1-time.png)|![Accurady for FedAvg-MTL and Decentralized vs Round number](./img/accuracy/acc1-round_number.png)|
+|![accuracy for FedAvg-MTL and DPA-SGD MTL vs walk clock time](./img/accuracy/acc1-time.png)|![accuracy for FedAvg-MTL and DPA-SGD MTL vs round number](./img/accuracy/acc1-round_number.png)|
 
 We also compared the performance between FedAvg on Multi-Task Learning Framework (FedAvg-MTL) and our DPA-SGD on Multi-Task Learning Framework (Ring DPA-SGD-MTL) with a ring topology network. From the Figure, we clearly see that the training speed is around 20% faster than the FedAvg-MTL. The Ring DPA-SGD-MTL’s accuracy is slightly lower but comparable than the FedAvg-MTL . This proves that our convergence analysis that when decentralized the topology of the gradient exchanging, due to the sparsity of the topology has a negative impact on the convergence of the model. We have to balance the performance of the model and the training speed in the federated learning setting.
 
@@ -260,6 +260,6 @@ better convergence.
   title = {Federated Multi-Task Learning with Decentralized Periodic Averaging SGD},
   author = {He, Chaoyang and Xie, Tian and Zhengyu, Yang and Hu, Zijian and Xia, Shuai},
   year = {2019},
-  url={https://dpa-sgd.github.io/},
+  url={https://fl.chaoyanghe.com/},
 }
 ```
