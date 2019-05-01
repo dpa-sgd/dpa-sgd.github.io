@@ -159,16 +159,28 @@ Here we illustrate system-wise advantages of DPA-SGD:
 - Especially if you approach and final results aren’t
   impressive, please show us your progressive steps
 
+## Appendix
+### Convergence Analysis
+
+**Convergence of DPA-SGD**: If the communication period $\tau$ satisfies:
+
 ```latex
-\begin{aligned}
-y &= y(x,t) = A e^{i\theta} \\
-&= A (\cos \theta + i \sin \theta) \\
-&= A (\cos(kx - \omega t) + i \sin(kx - \omega t)) \\
-&= A\cos(kx - \omega t) + i A\sin(kx - \omega t)  \\
-&= A\cos \Big(\frac{2\pi}{\lambda}x - \frac{2\pi v}{\lambda} t \Big) + i A\sin \Big(\frac{2\pi}{\lambda}x - \frac{2\pi v}{\lambda} t \Big)  \\
-&= A\cos \frac{2\pi}{\lambda} (x - v t) + i A\sin \frac{2\pi}{\lambda} (x - v t)
-\end{aligned}
+T \geq K^{3} \left( \frac{1+\zeta^{2}}{1-\zeta^{2}} \tau - 1 \right)^{2}
 ```
+
+then with learning rate $\eta = \frac{K}{LK} \sqrt{\frac{K}{T}}$ , the average-squared gradient norm after K iterations is bounded by
+
+```latex
+\mathbb{E} \Bigg[ \frac{1}{T} \sum\limits_{t=1}^T {\left\lVert \nabla F(\vec u_{t}) \right\rVert}^{2} \Bigg] \leq \frac{2[F(\vec{x}_{1})-F_{inf}]}{\eta T} + \frac{2\sigma^{2}}{\sqrt{KT}} \\ 
+    = \mathcal{O}(\frac{1}{\sqrt{KT}})
+```
+
+**How to choose $\tau$, $\zeta$**: for a small number of well-connected workers, larger $\tau$ is more preferable; for a large number of workers, using a sparse mixing matrix and small $\tau$ gives
+better convergence.
+
+**Effect of Extreme Large $K$**: the iteration number T will be extreme large. To guaran-tee the convergence, try to reduce the worker number through system-wised optimization:
+1. Streaming training
+1. upload on-device data to the edge data center.
 
 
 |||||
