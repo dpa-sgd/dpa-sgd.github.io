@@ -3,6 +3,15 @@ However, they both pose particular statistical and systems challenges. To simult
 
 ## Problem formulation
 
+```latex
+\begin{aligned}
+a &= b + c \\
+  &= e + f
+\end{aligned}
+```
+
+
+
 ### Statistical Challenges
 1. **Non-IID**: Each worker generates data in a non-i.i.d. (independent and identically distributed) manner with a distinct statistical distribution.
 1. **Unbalanced Local Data**: Workers have different quantity of data sample due to their different behaviors.
