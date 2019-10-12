@@ -257,7 +257,7 @@ better convergence.
 @inproceedings{
   he2019dpasgd,
   title = {Federated Multi-Task Learning with Decentralized Periodic Averaging SGD},
-  author = {He, Chaoyang and Xie, Tian and Zhengyu, Yang and Hu, Zijian and Xia, Shuai},
+  author = {He, Chaoyang and Xie, Tian and Zhao, Peilin and Yang, Zhengyu and Hu, Zijian and Huang, Junzhou and Shahabi, Cyrus},
   year = {2019},
   url={https://fl.chaoyanghe.com/},
 }
